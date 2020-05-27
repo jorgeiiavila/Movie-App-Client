@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchContainer: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(142px, 1fr));",
+    gridTemplateColumns: "repeat(auto-fill, minmax(142px, 1fr));",
     columnGap: "4px",
     marginTop: "16px",
   },

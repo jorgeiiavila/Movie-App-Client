@@ -450,6 +450,19 @@ const MovieDetail: FunctionComponent<MovieDetailType> = (props) => {
           postFeedback(newFeedback);
           setShowModal(false);
         }}
+        onRemove={() => {
+          removeFromList(filmID, "watched");
+          const newFeedback = {
+            filmID,
+            poster_path: filmData.film.poster_path,
+            review: "",
+            rating: -1,
+            title: filmData.film.title,
+            status: "pending" as FeedbackStatus,
+          };
+          setFilmData({ ...filmData, feedback: newFeedback });
+          setShowModal(false);
+        }}
         snackbar={props.snackbar}
         showModal={showModal}
       />

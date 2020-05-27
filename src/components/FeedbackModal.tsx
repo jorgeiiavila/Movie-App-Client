@@ -17,6 +17,7 @@ type FeedbackModalType = {
   filmTitle: string;
   onClose: () => void;
   onSave: (review: string, rating: number) => void;
+  onRemove: () => void;
   showModal: boolean;
 };
 
@@ -119,7 +120,11 @@ const FeedbackModal: FunctionComponent<FeedbackModalType & ComponentType> = (
                         ? { background: "#304ffe", border: "1px solid #005cb2" }
                         : {}
                     }
-                    onClick={() => setRating(10 - index)}
+                    onClick={() => {
+                      const newRating = 10 - index;
+                      if (newRating !== rating) setRating(newRating);
+                      else setRating(-1);
+                    }}
                     key={10 - index}
                   >
                     {10 - index}
@@ -136,8 +141,8 @@ const FeedbackModal: FunctionComponent<FeedbackModalType & ComponentType> = (
             </Button>
             <Button
               onClick={() => {
-                if (rating > 0) props.onSave(review, rating);
-                else props.snackbar("Please select a rating", "error");
+                if (rating > 0 || review !== "") props.onSave(review, rating);
+                else props.onRemove();
               }}
             >
               Save

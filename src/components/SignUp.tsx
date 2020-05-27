@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function validateEmail(email: string) {
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+}
+
 async function register(user: User) {
   const response = await fetch(config.serverURL + "/user/register", {
     method: "POST",
@@ -73,10 +77,16 @@ const SignUp: React.FunctionComponent<SignUpType> = (props) => {
           }
         ></TextField>
         <TextField
-          error={!user.email && showErrors}
+          error={(!user.email || !validateEmail(user.email)) && showErrors}
           label="Email"
           required
-          helperText={!user.email && showErrors ? "Required Field" : null}
+          helperText={
+            !user.email && showErrors
+              ? "Required Field"
+              : !validateEmail(user.email) && showErrors
+              ? "Invalid email"
+              : null
+          }
           onChange={(e) => setUser({ ...user, email: e.currentTarget.value })}
           type="email"
         ></TextField>
