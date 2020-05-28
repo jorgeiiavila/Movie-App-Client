@@ -315,10 +315,14 @@ const MovieDetail: FunctionComponent<MovieDetailType> = (props) => {
   return (
     <div className={classes.root}>
       <div className={classes.movieDataContainer}>
-        <img
-          className={classes.backDropPicture}
-          src={"https://image.tmdb.org/t/p/w1280" + filmData.film.backdrop_path}
-        ></img>
+        {!matches ? (
+          <img
+            className={classes.backDropPicture}
+            src={
+              "https://image.tmdb.org/t/p/w1280" + filmData.film.backdrop_path
+            }
+          ></img>
+        ) : null}
         <div
           className={`${classes.mainContainer} ${
             matches ? classes.mainContainerMobile : null
@@ -329,17 +333,14 @@ const MovieDetail: FunctionComponent<MovieDetailType> = (props) => {
               matches ? classes.infoContainerMobile : null
             }`}
           >
-            {!matches ? (
-              <div>
-                <img
-                  className={classes.posterImg}
-                  src={
-                    "https://image.tmdb.org/t/p/w1280" +
-                    filmData.film.poster_path
-                  }
-                ></img>
-              </div>
-            ) : null}
+            <div>
+              <img
+                className={classes.posterImg}
+                src={
+                  "https://image.tmdb.org/t/p/w1280" + filmData.film.poster_path
+                }
+              ></img>
+            </div>
             <div className={classes.titleContainer}>
               <h1>{filmData.film.title}</h1>
             </div>
