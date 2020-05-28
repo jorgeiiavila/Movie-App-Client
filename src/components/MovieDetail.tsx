@@ -329,14 +329,17 @@ const MovieDetail: FunctionComponent<MovieDetailType> = (props) => {
               matches ? classes.infoContainerMobile : null
             }`}
           >
-            <div>
-              <img
-                className={classes.posterImg}
-                src={
-                  "https://image.tmdb.org/t/p/w1280" + filmData.film.poster_path
-                }
-              ></img>
-            </div>
+            {!matches ? (
+              <div>
+                <img
+                  className={classes.posterImg}
+                  src={
+                    "https://image.tmdb.org/t/p/w1280" +
+                    filmData.film.poster_path
+                  }
+                ></img>
+              </div>
+            ) : null}
             <div className={classes.titleContainer}>
               <h1>{filmData.film.title}</h1>
             </div>
