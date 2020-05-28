@@ -86,7 +86,7 @@ const Core: React.FunctionComponent<RouteComponentProps & ComponentType> = (
 ) => {
   const classes = useStyles();
   const theme = useTheme();
-  const matches = useMediaQuery("(max-width:900px)");
+  const matches = useMediaQuery("(max-width:599px)");
   const [mobileOpen, setMobileOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user")!) as User;
 
@@ -116,6 +116,11 @@ const Core: React.FunctionComponent<RouteComponentProps & ComponentType> = (
       label: "Search",
       icon: <SearchIcon />,
       onClick: () => props.history.push("/search"),
+    },
+    {
+      label: "All Feedbacks",
+      icon: <ListIcon />,
+      onClick: () => props.history.push("/feedbacks"),
     },
   ];
 

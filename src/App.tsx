@@ -18,6 +18,7 @@ import Search from "./components/Search";
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import MovieList from "./components/MovieList";
+import FeedbacksList from "./components/FeedbacksList";
 import AdminSection from "./components/AdminSection";
 
 type SnackbarType = "error" | "info" | "success" | "warning";
@@ -72,48 +73,56 @@ function App() {
               }
             ></Route>
             <Route
-              render={() =>
-                isUserLogged() ? (
-                  getUserType() === "admin" ? (
-                    <AdminSection snackbar={snackbar}></AdminSection>
-                  ) : (
-                    <Core snackbar={snackbar}>
-                      <div style={{ height: "100%" }}>
-                        <Route path="/search">
-                          <Search snackbar={snackbar} />
-                        </Route>
-                        <Route path="/movie/:id">
-                          <MovieDetail snackbar={snackbar} />
-                        </Route>
-                        <Route path="/movie_list/toWatch">
-                          <MovieList
-                            listType="toWatch"
-                            snackbar={snackbar}
-                          ></MovieList>
-                        </Route>
-                        <Route path="/movie_list/watched">
-                          <MovieList
-                            listType="watched"
-                            snackbar={snackbar}
-                          ></MovieList>
-                        </Route>
-                        <Route path="/movie_list/favorites">
-                          <MovieList
-                            listType="favorites"
-                            snackbar={snackbar}
-                          ></MovieList>
-                        </Route>
-                      </div>
-                    </Core>
-                  )
-                ) : (
-                  <Redirect
-                    to={{
-                      pathname: "/login",
-                    }}
-                  ></Redirect>
-                )
-              }
+              render={() => {
+                if (!isUserLogged()) {
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("user");
+                  return (
+                    <Redirect
+                      to={{
+                        pathname: "/login",
+                      }}
+                    ></Redirect>
+                  );
+                }
+
+                if (getUserType() === "admin")
+                  return <AdminSection snackbar={snackbar}></AdminSection>;
+
+                return (
+                  <Core snackbar={snackbar}>
+                    <div style={{ height: "100%" }}>
+                      <Route path="/search">
+                        <Search snackbar={snackbar} />
+                      </Route>
+                      <Route path="/movie/:id">
+                        <MovieDetail snackbar={snackbar} />
+                      </Route>
+                      <Route path="/movie_list/toWatch">
+                        <MovieList
+                          listType="toWatch"
+                          snackbar={snackbar}
+                        ></MovieList>
+                      </Route>
+                      <Route path="/movie_list/watched">
+                        <MovieList
+                          listType="watched"
+                          snackbar={snackbar}
+                        ></MovieList>
+                      </Route>
+                      <Route path="/movie_list/favorites">
+                        <MovieList
+                          listType="favorites"
+                          snackbar={snackbar}
+                        ></MovieList>
+                      </Route>
+                      <Route path="/feedbacks">
+                        <FeedbacksList snackbar={snackbar}></FeedbacksList>
+                      </Route>
+                    </div>
+                  </Core>
+                );
+              }}
               path="/"
             ></Route>
           </Switch>
@@ -143,9 +152,10 @@ function App() {
   );
 }
 
-function isUserLogged() {
-  const userLogged = localStorage.getItem("token") !== null;
-  return userLogged;
+export function isUserLogged() {
+  const token = localStorage.getItem("token") !== null;
+  const user = localStorage.getItem("user") !== null;
+  return !!token && !!user;
 }
 
 function getUserType() {
